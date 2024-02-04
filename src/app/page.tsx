@@ -5,11 +5,5 @@ import HomeSection from "@/components/HomeSection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
-  return (
-    <>
-      <Nav />
-      <HomeSection />
-      <Footer />
-    </>
-  );
+  return <HomeSection />;
 }

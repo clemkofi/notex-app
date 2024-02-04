@@ -54,7 +54,7 @@ const HomeSection = () => {
             Stärken Sie Ihren Unterricht mit Präzision und Effizienz: Die
             bewährte Bewertungsanwendung für Pädagogen
           </Text> */}
-            <Link href="/" w="full">
+            <Link href="/login" w="full">
               <Button colorScheme="brand" w="full" size="lg" mt={20} mb={10}>
                 Login
               </Button>

@@ -60,12 +60,12 @@ const Nav = () => {
           alignItems="center"
           justifyContent="space-evenly"
         >
-          <Link href="/start">
+          <Link href="/">
             <Text fontSize="xl" fontWeight="600">
               Start
             </Text>
           </Link>
-          <Link href="/about">
+          <Link href="/uber-notex">
             <Text fontSize="xl" fontWeight="600">
               Über Notex
             </Text>
@@ -101,14 +101,14 @@ const Nav = () => {
               </DrawerHeader>
               <DrawerBody display="flex" flexDirection="column" gap={3}>
                 <Box>
-                  <Link href="/start">
+                  <Link href="/">
                     <Text fontSize={{ base: "md", md: "lg" }} fontWeight="600">
                       Start
                     </Text>
                   </Link>
                 </Box>
                 <Box>
-                  <Link href="/about">
+                  <Link href="/uber-notex">
                     <Text fontSize={{ base: "md", md: "lg" }} fontWeight="600">
                       Über Notex
                     </Text>
