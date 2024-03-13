@@ -20,9 +20,9 @@ import {
 
 const routes: IRoute[] = [
   {
-    name: "Main Dashboard",
-    layout: "/admin",
-    path: "/default",
+    name: "Startseite",
+    layout: "/dashboard",
+    path: "/startseite",
     icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
   },
   {

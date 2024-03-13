@@ -38,7 +38,7 @@ function Sidebar(props: SidebarProps) {
     "14px 17px 40px 4px rgba(112, 144, 176, 0.08)",
     "unset"
   );
-  // Chakra Color Mode
+  // Chakra Color Mode Die Notenapp
   let sidebarBg = useColorModeValue("brand.500", "whiteAlpha.50");
   let sidebarMargins = "0px";
 
@@ -73,7 +73,7 @@ function Sidebar(props: SidebarProps) {
 
 export function SidebarResponsive(props: SidebarResponsiveProps) {
   let sidebarBackgroundColor = useColorModeValue("white", "navy.800");
-  let menuColor = useColorModeValue("gray.400", "white");
+  let menuColor = useColorModeValue("brand.500", "whiteAlpha.50");
   // // SIDEBAR
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef<HTMLDivElement>(null);
