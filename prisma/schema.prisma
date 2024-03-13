@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model classes {
+  id       String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name     String
+  color    String     @db.VarChar
+  ownerId  String     @db.Uuid
+  profiles profiles   @relation(fields: [ownerId], references: [id], onDelete: Cascade, map: "public_classes_ownerId_fkey")
+  subjects subjects[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model profiles {
+  id        String    @id @db.Uuid
+  firstName String
+  lastName  String
+  classes   classes[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model subjects {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  color       String
+  description String
+  classId     String   @db.Uuid
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  classes     classes  @relation(fields: [classId], references: [id], onDelete: Cascade, map: "public_subjects_classId_fkey")
+}
