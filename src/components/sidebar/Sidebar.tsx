@@ -44,18 +44,21 @@ function Sidebar(props: SidebarProps) {
 
   // SIDEBAR
   return (
-    <Box display={{ sm: "none", xl: "block" }} position="fixed" minH="100%">
+    <Box
+      display={{ base: "none", md: "none", lg: "block", xl: "block" }}
+      position="fixed"
+      minH="100%"
+    >
       <Box
         bg={sidebarBg}
         transition={variantChange}
         w="300px"
-        h="100vh"
+        h={{ base: "0vh", md: "100vh" }}
         m={sidebarMargins}
         minH="100%"
         overflowX="hidden"
         boxShadow={shadow}
       >
-        {/* @ts-expect-error */}
         <Scrollbars
           autoHide
           renderTrackVertical={renderTrack}
@@ -83,7 +86,7 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
   //  BRAND
 
   return (
-    <Flex display={{ sm: "flex", xl: "none" }} alignItems="center">
+    <Flex display={{ sm: "flex", lg: "none", xl: "none" }} alignItems="center">
       <Flex ref={btnRef} w="max-content" h="max-content" onClick={onOpen}>
         <Icon
           as={IoMenuOutline}
@@ -114,7 +117,6 @@ export function SidebarResponsive(props: SidebarResponsiveProps) {
             _hover={{ boxShadow: "none" }}
           />
           <DrawerBody maxW="285px" px="0rem" pb="0">
-            {/* @ts-expect-error */}
             <Scrollbars
               autoHide
               renderTrackVertical={renderTrack}

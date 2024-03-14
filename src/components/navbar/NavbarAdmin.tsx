@@ -98,7 +98,7 @@ export default function AdminNavbar(props: {
       w={{
         base: "calc(100vw - 6%)",
         md: "calc(100vw - 8%)",
-        lg: "calc(100vw - 6%)",
+        lg: "calc(100vw - 350px)",
         xl: "calc(100vw - 350px)",
         "2xl": "calc(100vw - 365px)",
       }}
@@ -106,7 +106,7 @@ export default function AdminNavbar(props: {
       <Flex
         w="100%"
         flexDirection={{
-          sm: "column",
+          base: "column",
           md: "row",
         }}
         alignItems={{ xl: "center" }}
