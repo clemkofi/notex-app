@@ -13,6 +13,7 @@ import {
   FormControl,
   FormLabel,
   HStack,
+  Icon,
   Input,
   Modal,
   ModalBody,
@@ -26,7 +27,9 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import Upload from "rc-upload";
 import { useState } from "react";
+import { FiUploadCloud } from "react-icons/fi";
 
 const tableDataComplex: RowObj[] = [
   {
@@ -84,6 +87,12 @@ const page = () => {
 
   const [class_name, setClassName] = useState("");
   const [classColor, setClassColor] = useState("");
+
+  const [uploading, setUploading] = useState(false);
+
+  const handleColorButtonClick = (color: string) => {
+    setClassColor(color);
+  };
 
   const handleSubmit = () => {
     console.log("Login Pressed");
@@ -232,7 +241,8 @@ const page = () => {
 
               <SimpleGrid
                 columns={{ base: 2, md: 2, lg: 5, "2xl": 6 }}
-                gap="20px"
+                gridTemplateRows="min-content"
+                gap="10px"
                 mb="60px"
                 h={{ sm: "200px", md: "100%" }}
                 overflowX={{ sm: "scroll", xl: "hidden" }}
@@ -240,13 +250,73 @@ const page = () => {
                 {CircleColors.map((circleColor, i) => (
                   <Button
                     key={i}
+                    variant="solid"
                     bg={circleColor}
                     w="100px"
                     h="100px"
                     borderRadius={"50%"}
+                    border={
+                      circleColor === classColor ? "2px solid gray" : "none"
+                    }
+                    onClick={() => handleColorButtonClick(circleColor)}
                   ></Button>
                 ))}
               </SimpleGrid>
+
+              <FormControl mb="3">
+                <FormLabel>Schüler-/innen hinzufügen</FormLabel>
+                <Input type="file" display="none" />
+                <Upload
+                  name="file"
+                  onProgress={({ percent }) => {
+                    setUploading(true);
+                    if (percent === 100) {
+                      setUploading(false);
+                    }
+                  }}
+                  onSuccess={(response, file) => {
+                    const { name, size, type, lastModified } = file;
+                    const images = [
+                      {
+                        name,
+                        size,
+                        type,
+                        lastModified,
+                        url: response.url,
+                      },
+                    ];
+
+                    // setValue("images", images);
+                  }}
+                  // action={`${apiUrl}/media/upload`}
+                >
+                  <Box
+                    p="4"
+                    bg="gray.100"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    flexDirection="column"
+                  >
+                    {uploading ? (
+                      <span>The file is uploading...</span>
+                    ) : (
+                      <>
+                        <Icon
+                          as={FiUploadCloud}
+                          w={8}
+                          h={8}
+                          mb="3"
+                          color="gray.600"
+                        />
+                        <Text color="gray.700" fontWeight="semibold">
+                          Klicken oder ziehen Sie zum Hochladen
+                        </Text>
+                      </>
+                    )}
+                  </Box>
+                </Upload>
+              </FormControl>
             </Stack>
           </ModalBody>
           <ModalFooter>
