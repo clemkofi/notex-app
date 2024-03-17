@@ -16,7 +16,6 @@ export const findCurrentRoute = (routes: IRoute[]): IRoute => {
 
 export const getActiveRoute = (routes: IRoute[]): string => {
   const route = findCurrentRoute(routes);
-  console.log({ route });
   return route?.name || "Default Brand Text";
 };
 

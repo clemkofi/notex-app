@@ -50,7 +50,7 @@ const Nav = () => {
         <Box display="flex" alignItems="center">
           <Box maxWidth={{ base: "15%", md: "12", lg: "35%" }}>
             <Link href="/">
-              <Image src={logo.src} />
+              <Image src={logo.src} alt="Logo" />
             </Link>
           </Box>
         </Box>
@@ -95,7 +95,7 @@ const Nav = () => {
               <DrawerHeader borderBottomWidth="1px">
                 <Box display="flex" alignItems="center">
                   <Box maxWidth={{ base: "50%", md: "12", lg: "80%" }}>
-                    <Image src={logo.src} />
+                    <Image src={logo.src} alt="Logo" />
                   </Box>
                 </Box>
               </DrawerHeader>
