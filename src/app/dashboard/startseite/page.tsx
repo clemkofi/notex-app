@@ -1,8 +1,10 @@
 "use client";
 
+import ClassView from "@/components/ClassView";
 import ComplexTable from "@/components/ComplexTable";
 import MiniCalendar from "@/components/calendar/MiniCalendar";
 import { HSeparator } from "@/components/separator/Separator";
+import { addClass, getlastThreeClasses } from "@/server/data-layer/classes";
 import { CircleColors } from "@/theme/circleColors";
 import { RowObj } from "@/types/sharedTypes";
 import {
@@ -23,10 +25,12 @@ import {
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
+  Spinner,
   Stack,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Upload from "rc-upload";
 import { useState } from "react";
 import { FiUploadCloud } from "react-icons/fi";
@@ -82,7 +86,26 @@ const tableDataComplex: RowObj[] = [
   },
 ];
 
+function useClassesData() {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["classes"],
+    queryFn: () => getlastThreeClasses(),
+  });
+
+  const { mutateAsync, isError, isSuccess, isPending } = useMutation({
+    mutationFn: (classInfo: { name: string; color: string }) =>
+      addClass(classInfo),
+    onSuccess: () => refetch(),
+  });
+
+  return { data, mutateAsync, isLoading, isPending };
+}
+
 const page = () => {
+  const { data, mutateAsync, isLoading, isPending } = useClassesData();
+
+  console.log({ data });
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [class_name, setClassName] = useState("");
@@ -94,8 +117,17 @@ const page = () => {
     setClassColor(color);
   };
 
-  const handleSubmit = () => {
-    console.log("Login Pressed");
+  const handleSubmit = async () => {
+    console.log("submit Pressed");
+    try {
+      const classAdded = await mutateAsync({
+        name: class_name,
+        color: classColor,
+      });
+      onClose();
+    } catch (error) {
+      console.log("error occured");
+    }
   };
 
   return (
@@ -136,54 +168,16 @@ const page = () => {
           </HStack>
         </Box>
 
-        <SimpleGrid
-          columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
-          gap="20px"
-          mb="60px"
-        >
-          <Box
-            _hover={{ cursor: "pointer" }}
-            color="white"
-            bg="#11047A"
-            w="200px"
-            h="200px"
-            borderRadius={"50%"}
-          >
-            <Center top={0} left={0} w={"100%"} h={"100%"}>
-              <Text fontSize={"50px"} fontWeight="bold" color={"white"}>
-                1a
-              </Text>
+        {/* loading state for classes */}
+        {isLoading ? (
+          <Box mb="60px">
+            <Center>
+              <Spinner />
             </Center>
           </Box>
-          <Box
-            _hover={{ cursor: "pointer" }}
-            color="white"
-            bg="#11047A"
-            w="200px"
-            h="200px"
-            borderRadius={"50%"}
-          >
-            <Center top={0} left={0} w={"100%"} h={"100%"}>
-              <Text fontSize={"50px"} fontWeight="bold" color={"white"}>
-                1a
-              </Text>
-            </Center>
-          </Box>
-          <Box
-            _hover={{ cursor: "pointer" }}
-            color="white"
-            bg="#11047A"
-            w="200px"
-            h="200px"
-            borderRadius={"50%"}
-          >
-            <Center top={0} left={0} w={"100%"} h={"100%"}>
-              <Text fontSize={"50px"} fontWeight="bold" color={"white"}>
-                1a
-              </Text>
-            </Center>
-          </Box>
-        </SimpleGrid>
+        ) : (
+          <ClassView data={data!} />
+        )}
 
         <Box mx="40px">
           <HSeparator mb="20px" />
@@ -286,6 +280,8 @@ const page = () => {
                       },
                     ];
 
+                    console.log({ file });
+
                     // setValue("images", images);
                   }}
                   // action={`${apiUrl}/media/upload`}
@@ -321,7 +317,7 @@ const page = () => {
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="brand" onClick={handleSubmit}>
-              +
+              {isPending ? <Spinner /> : <span>+</span>}
             </Button>
           </ModalFooter>
         </ModalContent>

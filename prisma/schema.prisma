@@ -10,17 +10,18 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model classes {
-  id       String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name     String
-  color    String     @db.VarChar
-  ownerId  String     @db.Uuid
-  profiles profiles   @relation(fields: [ownerId], references: [id], onDelete: Cascade, map: "public_classes_ownerId_fkey")
-  subjects subjects[]
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  color     String     @db.VarChar
+  ownerId   String     @db.Uuid
+  createdAt DateTime   @default(now()) @db.Timestamptz(6)
+  profiles  profiles   @relation(fields: [ownerId], references: [id], onDelete: Cascade, map: "public_classes_ownerId_fkey")
+  subjects  subjects[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model profiles {
-  id        String    @id @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   firstName String
   lastName  String
   classes   classes[]
