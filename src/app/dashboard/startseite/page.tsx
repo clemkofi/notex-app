@@ -30,9 +30,10 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Upload from "rc-upload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiUploadCloud } from "react-icons/fi";
 
 const tableDataComplex: RowObj[] = [

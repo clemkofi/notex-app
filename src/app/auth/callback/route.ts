@@ -18,5 +18,5 @@ export async function GET(request: NextRequest) {
 
   console.log("request url => ", requestUrl.origin);
 
-  return NextResponse.redirect(requestUrl.origin);
+  return NextResponse.redirect(`${requestUrl.origin}/dashboard`);
 }
