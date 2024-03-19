@@ -12,20 +12,32 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import AdminNavbarLinks from "./NavbarLinksAdmin";
-import { isWindowAvailable } from "@/utils/navigation";
+import {
+  getActiveNavbar,
+  getActiveRoute,
+  isWindowAvailable,
+} from "@/utils/navigation";
+import routes from "@/utils/routes";
+import { usePathname } from "next/navigation";
 
 export default function AdminNavbar(props: {
-  secondary: boolean;
-  message: string | boolean;
-  brandText: string;
   logoText: string;
   fixed: boolean;
   onOpen: (...args: any[]) => any;
 }) {
   const [scrolled, setScrolled] = useState(false);
+  const [sec, setSec] = useState();
+  const [brand, setBrand] = useState();
+
+  const pathname = usePathname();
+  console.log({ pathname });
+  console.log("active ==> ", getActiveRoute(pathname));
 
   useEffect(() => {
     if (isWindowAvailable()) {
+      console.log("current location ==> ", window.location.href);
+
+      console.log("actvie nav ===> ", getActiveNavbar(pathname));
       // You now have access to `window`
       window.addEventListener("scroll", changeNavbar);
 
@@ -34,8 +46,6 @@ export default function AdminNavbar(props: {
       };
     }
   });
-
-  const { secondary, message, brandText } = props;
 
   // Here are all the props that may change depending on navbar's type or state.(secondary, variant, scrolled)
   let mainText = useColorModeValue("navy.700", "white");
@@ -78,7 +88,7 @@ export default function AdminNavbar(props: {
       transition-property="box-shadow, background-color, filter, border"
       transitionTimingFunction="linear, linear, linear, linear"
       alignItems={{ xl: "center" }}
-      display={secondary ? "block" : "flex"}
+      display={getActiveNavbar(pathname) ? "block" : "flex"}
       minH="75px"
       justifyContent={{ xl: "center" }}
       lineHeight="25.6px"
@@ -122,7 +132,7 @@ export default function AdminNavbar(props: {
 
             <BreadcrumbItem color={secondaryText} fontSize="sm">
               <BreadcrumbLink href="#" color={secondaryText}>
-                {brandText}
+                {getActiveRoute(pathname)}
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
@@ -144,13 +154,13 @@ export default function AdminNavbar(props: {
               boxShadow: "none",
             }}
           >
-            {brandText}
+            {getActiveRoute(pathname)}
           </Link>
         </Box>
         <Box ms="auto" w={{ sm: "100%", md: "unset" }}>
           <AdminNavbarLinks
             onOpen={props.onOpen}
-            secondary={props.secondary}
+            secondary={getActiveNavbar(pathname)}
             fixed={props.fixed}
           />
         </Box>

@@ -1,5 +1,7 @@
+import Classes from "@/components/classes";
+
 const page = () => {
-  return <div>Klassen</div>;
+  return <Classes />;
 };
 
 export default page;

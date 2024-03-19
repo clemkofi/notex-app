@@ -26,11 +26,17 @@ import { IoMdMoon, IoMdSunny } from "react-icons/io";
 import { MdInfoOutline, MdNotificationsNone } from "react-icons/md";
 import routes from "@/utils/routes";
 import { ItemContent } from "../menu/ItemContent";
+import { usePathname, useRouter } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 export default function HeaderLinks(props: {
   secondary: boolean;
   onOpen: boolean | any;
   fixed: boolean | any;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const supabase = createClientComponentClient();
+
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   // Chakra Color Mode
@@ -47,6 +53,13 @@ export default function HeaderLinks(props: {
     "14px 17px 40px 4px rgba(112, 144, 176, 0.06)"
   );
   const borderButton = useColorModeValue("secondaryGray.500", "whiteAlpha.200");
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    window.history.replaceState(null, "", pathname);
+    router.push("/dashboard");
+    router.refresh();
+  };
 
   return (
     <Flex
@@ -143,6 +156,7 @@ export default function HeaderLinks(props: {
               color="red.400"
               borderRadius="8px"
               px="14px"
+              onClick={handleSignOut}
             >
               <Text fontSize="sm">Log out</Text>
             </MenuItem>
