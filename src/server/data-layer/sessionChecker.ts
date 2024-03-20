@@ -9,5 +9,9 @@ export async function checkSession() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  return session ? session : false;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return { session, user: user! };
 }

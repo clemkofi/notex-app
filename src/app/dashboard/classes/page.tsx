@@ -1,4 +1,4 @@
-import Classes from "@/components/classes";
+import Classes from "@/components/Classes";
 
 const page = () => {
   return <Classes />;

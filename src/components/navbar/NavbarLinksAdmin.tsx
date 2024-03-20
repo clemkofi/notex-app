@@ -28,6 +28,21 @@ import routes from "@/utils/routes";
 import { ItemContent } from "../menu/ItemContent";
 import { usePathname, useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useQuery } from "@tanstack/react-query";
+import {
+  getCurrentUserProfile,
+  getProfiles,
+} from "@/server/data-layer/profiles";
+
+function useProfileData() {
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["profile"],
+    queryFn: () => getCurrentUserProfile(),
+  });
+
+  return { data, isLoading };
+}
+
 export default function HeaderLinks(props: {
   secondary: boolean;
   onOpen: boolean | any;
@@ -54,12 +69,20 @@ export default function HeaderLinks(props: {
   );
   const borderButton = useColorModeValue("secondaryGray.500", "whiteAlpha.200");
 
+  const { data, isLoading } = useProfileData();
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     window.history.replaceState(null, "", pathname);
     router.push("/dashboard");
     router.refresh();
   };
+
+  const getCurrentUser = async () => {
+    console.log("user => ", await supabase.auth.getUser());
+  };
+
+  getCurrentUser();
 
   return (
     <Flex
@@ -138,7 +161,7 @@ export default function HeaderLinks(props: {
               fontWeight="700"
               color={textColor}
             >
-              👋&nbsp; Hey, Adela
+              👋&nbsp; Hey, Clement
             </Text>
           </Flex>
           <Flex flexDirection="column" p="10px">
@@ -147,8 +170,24 @@ export default function HeaderLinks(props: {
               _focus={{ bg: "none" }}
               borderRadius="8px"
               px="14px"
+              onClick={(e) => {
+                e.preventDefault();
+                console.log("Mein Konto");
+              }}
             >
-              <Text fontSize="sm">Profile Settings</Text>
+              <Text fontSize="sm">Mein Konto</Text>
+            </MenuItem>
+            <MenuItem
+              _hover={{ bg: "none" }}
+              _focus={{ bg: "none" }}
+              borderRadius="8px"
+              px="14px"
+              onClick={(e) => {
+                e.preventDefault();
+                console.log("Einstellungen");
+              }}
+            >
+              <Text fontSize="sm">Einstellungen</Text>
             </MenuItem>
             <MenuItem
               _hover={{ bg: "none" }}

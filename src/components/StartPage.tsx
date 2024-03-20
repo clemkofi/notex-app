@@ -4,9 +4,19 @@ import ClassView from "@/components/ClassView";
 import ComplexTable from "@/components/ComplexTable";
 import MiniCalendar from "@/components/calendar/MiniCalendar";
 import { HSeparator } from "@/components/separator/Separator";
+import { getCurrentUserProfile } from "@/server/data-layer/profiles";
 import { RowObj } from "@/types/sharedTypes";
-import { Box, Center, HStack, SimpleGrid, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  HStack,
+  SimpleGrid,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
+import Greeting from "./Greeting";
 
 const tableDataComplex: RowObj[] = [
   {
@@ -66,18 +76,7 @@ const StartPage = () => {
   return (
     <>
       <Box pt={{ base: "50px", md: "80px", xl: "80px" }}>
-        <Box h="131px" w="100%">
-          <Center>
-            <Text
-              color={"brand.700"}
-              fontWeight="bold"
-              fontSize="60px"
-              mt="10px"
-            >
-              Hallo Irena!
-            </Text>
-          </Center>
-        </Box>
+        <Greeting />
 
         <Box mx="40px">
           <HSeparator mb="20px" />
